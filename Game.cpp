@@ -35,13 +35,13 @@ void Game::table_draw() const{
         if(i+1 <10)
         {
             econio_textcolor(COL_GREEN);
-            std::cout << i+1;
+            std::cout << "  " << i+1 << " |";
             econio_textcolor(COL_RESET);
         }
         else
         {
             econio_textcolor(COL_GREEN);
-            std::cout << i + 1;
+            std::cout << " " << i+1 << " |";
             econio_textcolor(COL_RESET);
         }
         for(int j = 0; j<= width-1;j++)
@@ -53,7 +53,7 @@ void Game::table_draw() const{
         }
         line(width);
     }
-    std::cout <<"Tiles: " << width*height << std::endl<<  "mines: " << mine_n << std::endl << "revealed: " << revealed_n << std::endl;
+    std::cout << "No. of tiles: " << height*width << std::endl << "No. of mines: " << mine_n << std::endl << "No. of revealed: " << revealed_n << std::endl;
 //-----------------------------
 
 }

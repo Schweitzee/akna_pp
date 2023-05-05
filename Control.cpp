@@ -25,9 +25,13 @@ EconioKey stepper(int &x, int &y, int a, int b){
             x = max(x-5, 6);
         else if (key == KEY_RIGHT)
             x = min(x+5, b*5+1);
-        else if (key == KEY_ENTER)
+        else if (key == KEY_ENTER) {
+            econio_normalmode();
             return KEY_ENTER;
-        else if (key == KEY_BACKSPACE)
+        }
+        else if (key == KEY_BACKSPACE){
+            econio_normalmode();
             return KEY_BACKSPACE;
+        }
     }
 }

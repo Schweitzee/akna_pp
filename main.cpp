@@ -23,13 +23,10 @@ int main() {
         }
         Game gameszko(a, b, c);
 
-        gameszko.table_draw();
-
         int x = 6;
         int y = 2;
         gameszko.table_draw();
         res = stepper(x, y, a, b);
-        econio_normalmode();
 
         if (res == KEY_ENTER) {
             gameszko.get_table()->get((y - 2) / 2, (x - 6) / 5)->Uncover();
@@ -47,7 +44,6 @@ int main() {
         while (!gameszko.fail_check() && !gameszko.win_check()) {
             gameszko.table_draw();
             res = stepper(x, y, a, b);
-            econio_normalmode();
             if (res == KEY_ENTER && !gameszko.get_table()->get((y - 2) / 2, (x - 6) / 5)->is_mine() &&
                 !gameszko.get_table()->get((y - 2) / 2, (x - 6) / 5)->flagged())
                 gameszko.plus_revealed(gameszko.get_table()->revealer((y - 2) / 2, (x - 6) / 5));
@@ -60,7 +56,7 @@ int main() {
         if (gameszko.fail_check()) {
             gameszko.table_draw();
             econio_rawmode();
-            econio_gotoxy(0, a * 2 + 3);
+            econio_gotoxy(0, a * 2 + 5);
             econio_normalmode();
             econio_textcolor(COL_RED);
             std::cout << "YOU FAILED" << std::endl << "press anything except ESC to start new game," << std::endl << "press ESC to close game.";
@@ -72,7 +68,7 @@ int main() {
         if (gameszko.win_check()) {
             gameszko.table_draw();
             econio_rawmode();
-            econio_gotoxy(0, a * 2 + 3);
+            econio_gotoxy(0, a * 2 + 5);
             econio_normalmode();
             econio_textcolor(COL_GREEN);
             std::cout << "YOU WON!" << std::endl << "press anything except ESC to start new game," << std::endl << "press ESC to close game.";
