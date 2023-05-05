@@ -69,6 +69,8 @@ public:
 
     void first_step(int& res, int& x, int& y);
 
+    void game_loop(int& res, int& x, int& y);
+
     void finish_him(int& res) const;
 
     void draw() const;

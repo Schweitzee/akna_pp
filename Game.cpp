@@ -104,4 +104,20 @@ void Game::first_step(int& res, int& x, int& y){
 
 }
 
+void Game::game_loop(int& res, int& x, int& y){
+    while (!fail_check() && !win_check()) {
+        draw();
+        fflush(stdin);
+        res = stepper(x, y, get_h(), get_w());
+        if (res == KEY_ENTER && !get_table()->get((y - 2) / 2, (x - 6) / 5)->is_mine() &&
+            !get_table()->get((y - 2) / 2, (x - 6) / 5)->flagged())
+            plus_revealed(get_table()->revealer((y - 2) / 2, (x - 6) / 5));
+        if (res == KEY_BACKSPACE && !get_table()->get((y - 2) / 2, (x - 6) / 5)->uncovered())
+            get_table()->flag_toggle((y - 2) / 2, (x - 6) / 5);
+        if (res == KEY_ENTER && get_table()->get((y - 2) / 2, (x - 6) / 5)->is_mine() &&
+            !get_table()->get((y - 2) / 2, (x - 6) / 5)->flagged())
+            toggle_fail_state();
+    }
+};
+
 

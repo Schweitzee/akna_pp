@@ -28,19 +28,8 @@ int main() {
 
         gameszko.first_step(res, x, y);
 
+        gameszko.game_loop(res, x, y);
 
-        while (!Game::fail_check() && !gameszko.win_check()) {
-            gameszko.draw();
-            res = stepper(x, y, gameszko.get_h(), gameszko.get_w());
-            if (res == KEY_ENTER && !gameszko.get_table()->get((y - 2) / 2, (x - 6) / 5)->is_mine() &&
-                !gameszko.get_table()->get((y - 2) / 2, (x - 6) / 5)->flagged())
-                gameszko.plus_revealed(gameszko.get_table()->revealer((y - 2) / 2, (x - 6) / 5));
-            if (res == KEY_BACKSPACE && !gameszko.get_table()->get((y - 2) / 2, (x - 6) / 5)->uncovered())
-                gameszko.get_table()->flag_toggle((y - 2) / 2, (x - 6) / 5);
-            if (res == KEY_ENTER && gameszko.get_table()->get((y - 2) / 2, (x - 6) / 5)->is_mine() &&
-                !gameszko.get_table()->get((y - 2) / 2, (x - 6) / 5)->flagged())
-                Game::toggle_fail_state();
-        }
         gameszko.finish_him(res);
     }
     return 0;
