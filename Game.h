@@ -30,6 +30,9 @@ public:
 
     Game(int heig, int wid, unsigned mine) : height(heig), width(wid), mine_n(mine), revealed_n(0), table(height, width){};
 
+    int get_h() const{return height;}
+    int get_w() const{return width;}
+
     static bool fail_check(){
         return fail_state;
     }
@@ -62,6 +65,8 @@ public:
     bool win_check() const{
         return height*width-mine_n == revealed_n;
     }
+
+    void finish_him(int& res) const;
 
     void draw() const;
 

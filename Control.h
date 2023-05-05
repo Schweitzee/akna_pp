@@ -7,6 +7,7 @@
 
 #include <iostream>
 # include "econio.h"
+#include "Game.h"
 
 template<typename T>
 T min(T a, T b) { return a < b ? a : b; }
@@ -16,12 +17,8 @@ T max(T a, T b) { return a > b ? a : b; }
 
 EconioKey stepper(int &x, int &y, int a, int b);
 
-enum GameState{
-    INIT,
-    BEGIN,
-    STEP,
-    OVER,
-};
+
+
 
 
 #endif //AKNA_PP_CONTROL_H

@@ -54,6 +54,34 @@ void Game::draw() const{
         line(width);
     }
     std::cout << "No. of tiles: " << height*width << std::endl << "No. of mines: " << mine_n << std::endl << "No. of revealed: " << revealed_n << std::endl;
-//-----------------------------
 
 }
+
+void Game::finish_him(int& res) const{
+    if (Game::fail_check()) {
+        draw();
+        econio_rawmode();
+        econio_gotoxy(0, get_h() * 2 + 5);
+        econio_normalmode();
+        econio_textcolor(COL_RED);
+        std::cout << "YOU FAILED" << std::endl << "press anything except ESC to start new game," << std::endl << "press ESC to close game.";
+        econio_textcolor(COL_RESET);
+        econio_rawmode();
+        res = econio_getch();
+        econio_normalmode();
+    }
+    if (win_check()) {
+        draw();
+        econio_rawmode();
+        econio_gotoxy(0, get_h() * 2 + 5);
+        econio_normalmode();
+        econio_textcolor(COL_GREEN);
+        std::cout << "YOU WON!" << std::endl << "press anything except ESC to start new game," << std::endl << "press ESC to close game.";
+        econio_textcolor(COL_RESET);
+        econio_rawmode();
+        res = econio_getch();
+        econio_normalmode();
+    }
+}
+
+

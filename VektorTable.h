@@ -14,17 +14,16 @@
 class VektorTable {
     std::vector<std::vector<Tile*>> matrix;
 public:
+
+
     VektorTable(int row, int col) {
         matrix.resize(row);
         for (int i = 0; i < row; i++) {
             matrix[i].resize(col);
-        }
-
-        for (int i = 0; i < row; i++) {
             for (int j = 0; j < col; j++) {
                 matrix[i][j] = new Field();
-            }
         }
+    }
     }
 
     void place_mine(unsigned row, unsigned col){
