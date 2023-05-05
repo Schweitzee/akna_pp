@@ -1,7 +1,6 @@
 #include <iostream>
 
 #include "Game.h"
-//#include "Control.h"
 #include "memtrace.h"
 
 int main() {
