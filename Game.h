@@ -30,10 +30,10 @@ public:
 
     Game(int heig, int wid, unsigned mine) : height(heig), width(wid), mine_n(mine), revealed_n(0), table(height, width){};
 
-    bool fail_check(){
+    static bool fail_check(){
         return fail_state;
     }
-    void toggle_fail_state(){
+    static void toggle_fail_state(){
         if(fail_state)
             fail_state = false;
         else
@@ -63,7 +63,7 @@ public:
         return height*width-mine_n == revealed_n;
     }
 
-    void table_draw() const;
+    void draw() const;
 
 };
 

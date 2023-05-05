@@ -16,7 +16,7 @@ static void line(int w)
     std::cout << std::endl;
 }
 
-void Game::table_draw() const{
+void Game::draw() const{
     econio_clrscr();
     std::cout << "     ";
     econio_textcolor(COL_RED);

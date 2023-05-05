@@ -25,7 +25,7 @@ int main() {
 
         int x = 6;
         int y = 2;
-        gameszko.table_draw();
+        gameszko.draw();
         res = stepper(x, y, a, b);
 
         if (res == KEY_ENTER) {
@@ -42,7 +42,7 @@ int main() {
         }
 
         while (!gameszko.fail_check() && !gameszko.win_check()) {
-            gameszko.table_draw();
+            gameszko.draw();
             res = stepper(x, y, a, b);
             if (res == KEY_ENTER && !gameszko.get_table()->get((y - 2) / 2, (x - 6) / 5)->is_mine() &&
                 !gameszko.get_table()->get((y - 2) / 2, (x - 6) / 5)->flagged())
@@ -54,7 +54,7 @@ int main() {
                 gameszko.toggle_fail_state();
         }
         if (gameszko.fail_check()) {
-            gameszko.table_draw();
+            gameszko.draw();
             econio_rawmode();
             econio_gotoxy(0, a * 2 + 5);
             econio_normalmode();
@@ -66,7 +66,7 @@ int main() {
             econio_normalmode();
         }
         if (gameszko.win_check()) {
-            gameszko.table_draw();
+            gameszko.draw();
             econio_rawmode();
             econio_gotoxy(0, a * 2 + 5);
             econio_normalmode();
