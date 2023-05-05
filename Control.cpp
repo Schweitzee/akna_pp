@@ -17,13 +17,13 @@ EconioKey stepper(int &x, int &y, int a, int b){
         econio_gotoxy(x,y);
         printf(" ");
 
-        if (key == KEY_UP)
+        if (key == KEY_UP || key == 'w')
             y = max(y-2, 2);
-        else if (key == KEY_DOWN)
+        else if (key == KEY_DOWN || key == 's')
             y = min(y+2, a*2);
-        else if (key == KEY_LEFT)
+        else if (key == KEY_LEFT || key == 'a')
             x = max(x-5, 6);
-        else if (key == KEY_RIGHT)
+        else if (key == KEY_RIGHT || key == 'd')
             x = min(x+5, b*5+1);
         else if (key == KEY_ENTER) {
             econio_normalmode();

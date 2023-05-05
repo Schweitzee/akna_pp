@@ -9,6 +9,7 @@
 #include "Tile.h"
 #include "VektorTable.h"
 #include "econio.h"
+#include "control.h"
 
 #include <vector>
 #include <memory>
@@ -65,6 +66,8 @@ public:
     bool win_check() const{
         return height*width-mine_n == revealed_n;
     }
+
+    void first_step(int& res, int& x, int& y);
 
     void finish_him(int& res) const;
 

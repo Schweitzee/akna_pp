@@ -85,3 +85,23 @@ void Game::finish_him(int& res) const{
 }
 
 
+void Game::first_step(int& res, int& x, int& y){
+    draw();
+    res = stepper(x, y, get_h(), get_w());
+
+    if (res == KEY_ENTER) {
+        get_table()->get((y - 2) / 2, (x - 6) / 5)->Uncover();
+    }
+    if (res == KEY_BACKSPACE)
+        get_table()->flag_toggle((y - 2) / 2, (x - 6) / 5);
+
+    rand_mine();
+
+    if (res == KEY_ENTER) {
+        get_table()->get((y - 2) / 2, (x - 6) / 5)->Cover();
+        plus_revealed(get_table()->revealer((y - 2) / 2, (x - 6) / 5));
+    }
+
+}
+
+
