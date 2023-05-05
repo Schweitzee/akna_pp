@@ -4,15 +4,10 @@
 #include "Control.h"
 #include "memtrace.h"
 
-
-
-
 int main() {
     std::cout << "anyad"<< std::endl;
     int res = KEY_ENTER;
     while(res != KEY_ESCAPE) {
-
-
         //
         //      JÁTÉK LEÍRÁS? INPUT ÉS BUILD
         //
@@ -86,10 +81,7 @@ int main() {
             res = econio_getch();
             econio_normalmode();
         }
-
     }
-
-
     return 0;
 }
 

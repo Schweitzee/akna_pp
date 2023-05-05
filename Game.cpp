@@ -35,25 +35,25 @@ void Game::table_draw() const{
         if(i+1 <10)
         {
             econio_textcolor(COL_GREEN);
-            printf("  %d |",i+1);
+            std::cout << i+1;
             econio_textcolor(COL_RESET);
         }
         else
         {
             econio_textcolor(COL_GREEN);
-            printf(" %d |", i + 1);
+            std::cout << i + 1;
             econio_textcolor(COL_RESET);
         }
         for(int j = 0; j<= width-1;j++)
         {
-            printf(" ");
+            std::cout << " ";
             table.get(i,j)->draw(fail_state);
             econio_textcolor(COL_RESET);
             std::cout << " |";
         }
         line(width);
     }
-    std::cout << ((double)revealed_n/(width*height))*100 << "% of tiles revealed, " << ((double)mine_n/(width*height))*100 << "% is mine." << std::endl;
+    std::cout <<"Tiles: " << width*height << std::endl<<  "mines: " << mine_n << std::endl << "revealed: " << revealed_n << std::endl;
 //-----------------------------
 
 }
