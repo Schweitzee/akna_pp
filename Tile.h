@@ -12,7 +12,7 @@
 
 
 class Tile {
-    enum Status { COVERED, UNCOVERED, FLAGGED } state;
+    enum { COVERED, UNCOVERED, FLAGGED } state;
 
 public:
 
@@ -42,7 +42,7 @@ public:
 
     virtual unsigned get_num() = 0;
 
-    virtual void draw(bool) = 0;
+    virtual void draw(bool game_end) = 0;
 
     virtual void up() = 0;
 
