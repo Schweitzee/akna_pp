@@ -31,7 +31,10 @@ int main() {
         gameszko.game_loop(res, x, y);
 
         gameszko.finish_him(res);
+
     }
+
+    getchar();
     return 0;
 }
 

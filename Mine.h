@@ -10,6 +10,7 @@
 
 class Mine : public Tile {
 public:
+
     Mine() : Tile(){}
 
     bool is_mine() override{return true;}
@@ -25,11 +26,11 @@ public:
             econio_textcolor(COL_LIGHTCYAN);
             std::cout << " P";
         }
-    };
+    }
 
-    unsigned get_num(){return 10;}
+    unsigned get_num()override{return 10;}
 
-    void up(){}; //nothing
+    void up()override{};
 
 };
 

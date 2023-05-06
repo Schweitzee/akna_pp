@@ -66,6 +66,7 @@ void Game::finish_him(int& res) const{
         econio_textcolor(COL_RED);
         std::cout << "YOU FAILED" << std::endl << "press anything except ESC to start new game," << std::endl << "press ESC to close game.";
         econio_textcolor(COL_RESET);
+        toggle_fail_state();
         econio_rawmode();
         res = econio_getch();
         econio_normalmode();

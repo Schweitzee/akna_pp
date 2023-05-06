@@ -51,12 +51,14 @@ public:
     void filler();
 
     ~VektorTable() {
-        std::cout << "VÉGEM VAN GECI" << std::endl;
-        for (int i = 0; i < matrix.size() - 1; ++i) {
+        std::cout << "VEGEM VAN GECI - 1" << std::endl;
+        for (int i = 0; i < matrix.size(); ++i) {
             for (int j = 0; j < matrix[i].size(); ++j) {
                 delete matrix[i][j];
             }
         }
+        std::cout << "VEGEM VAN GECI - 2" << std::endl;
+        getchar();
     }
 };
 
