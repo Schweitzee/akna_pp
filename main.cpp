@@ -1,7 +1,8 @@
 #include <iostream>
 
 #include "Game.h"
-#include "memtrace.h"
+
+
 
 int main() {
     std::cout << "anyad"<< std::endl;

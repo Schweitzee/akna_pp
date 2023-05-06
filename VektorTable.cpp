@@ -33,7 +33,6 @@ int VektorTable::revealer(int row, int col){
 }
 
 void VektorTable::filler() {
-
     unsigned height = matrix.size(), width = matrix[0].size();
     //bal felso
     if(matrix[0][0]->is_mine()){

@@ -5,17 +5,19 @@
 #ifndef AKNA_PP_GAME_H
 #define AKNA_PP_GAME_H
 
+#include <vector>
+#include <memory>
+#include <random>
+#include <ctime>
+#include <iostream>
 
 #include "Tile.h"
 #include "VektorTable.h"
 #include "econio.h"
 #include "control.h"
 
-#include <vector>
-#include <memory>
-#include <random>
-#include <ctime>
-#include <iostream>
+#include "memtrace.h"
+
 
 
 class Game{

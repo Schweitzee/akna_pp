@@ -4,6 +4,7 @@
 
 #include "Control.h"
 
+
 EconioKey stepper(int &x, int &y, int a, int b){
     fflush(stdin);
     econio_rawmode();

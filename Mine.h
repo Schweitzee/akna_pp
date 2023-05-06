@@ -19,8 +19,6 @@ public:
             econio_textcolor(COL_YELLOW);
             std::cout << " X";
         }
-        else if(this->uncovered())
-            std::cout << "UX";
         else if(this->covered())
             std::cout << " x";
         else if(this->flagged()) {

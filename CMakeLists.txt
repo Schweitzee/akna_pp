@@ -11,7 +11,7 @@ add_executable(akna_pp main.cpp
         Game.cpp Game.h
         Field.cpp Field.h
         Mine.cpp Mine.h
-        Tile.cpp Tile.h
+        Tile.h
         VektorTable.cpp VektorTable.h
         Control.cpp Control.h
         econio.cpp econio.h
