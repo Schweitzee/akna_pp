@@ -4,10 +4,13 @@
 
 #include "Field.h"
 
-void colornum(unsigned i){
+void colornum(unsigned i, bool end){
     switch (i) {
         case 0:
-            std::cout << " #";
+            if(end)
+                std::cout << "  ";
+            else
+                std::cout << " #";
             break;
         case 1:
             econio_textcolor(COL_RED);
