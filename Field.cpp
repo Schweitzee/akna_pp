@@ -4,6 +4,7 @@
 
 #include "Field.h"
 
+
 void colornum(unsigned i, bool end){
     switch (i) {
         case 0:
@@ -44,5 +45,17 @@ void colornum(unsigned i, bool end){
             econio_textcolor(COL_BROWN);
             std::cout << " 8";
             break;
+    }
+}
+
+
+void Field::draw(bool end){
+    if(end || this->uncovered())
+        colornum(mine_c, end);
+    if(this->covered() && !end)
+        std::cout << "  ";
+    if(this->flagged() && !end){
+    econio_textcolor(COL_LIGHTCYAN);
+    std::cout << " P";
     }
 }

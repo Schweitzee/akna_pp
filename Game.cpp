@@ -47,7 +47,7 @@ void Game::draw() const{
         for(int j = 0; j<= width-1;j++)
         {
             std::cout << " ";
-            table.get(i,j)->draw(fail_state);
+            table->get(i,j)->draw(fail_state);
             econio_textcolor(COL_RESET);
             std::cout << " |";
         }
@@ -58,49 +58,104 @@ void Game::draw() const{
 }
 
 void Game::finish_him(int& res) const{
-    if (Game::fail_check()) {
         draw();
         econio_rawmode();
         econio_gotoxy(0, get_h() * 2 + 5);
         econio_normalmode();
-        econio_textcolor(COL_RED);
-        std::cout << "YOU FAILED" << std::endl << "press anything except ESC to start new game," << std::endl << "press ESC to close game.";
-        econio_textcolor(COL_RESET);
-        toggle_fail_state();
+        if(Game::fail_check()){
+            econio_textcolor(COL_RED);
+            std::cout << "YOU FAILED" << std::endl << "press anything except ESC to start new game," << std::endl << "press ESC to close game.";
+            econio_textcolor(COL_RESET);
+            toggle_fail_state();
+        }
+        if(win_check()){
+            econio_textcolor(COL_GREEN);
+            std::cout << "YOU WON!" << std::endl << "press anything except ESC to start new game," << std::endl << "press ESC to close game.";
+            econio_textcolor(COL_RESET);
+        }
         econio_rawmode();
         res = econio_getch();
         econio_normalmode();
-    }
-    if (win_check()) {
-        draw();
-        econio_rawmode();
-        econio_gotoxy(0, get_h() * 2 + 5);
-        econio_normalmode();
-        econio_textcolor(COL_GREEN);
-        std::cout << "YOU WON!" << std::endl << "press anything except ESC to start new game," << std::endl << "press ESC to close game.";
-        econio_textcolor(COL_RESET);
-        econio_rawmode();
-        res = econio_getch();
-        econio_normalmode();
+}
+
+
+template<class T>
+T max(T a, T b){
+    return a > b ? a : b;
+}
+
+template<class T>
+T min(T a, T b){
+    return a < b ? a : b;
+}
+
+/**
+ * @brief handles the in-game stepping of the cursor
+ * @param x horizontal location of the cursor
+ * @param y vertical location of the cursor
+ * @param a height of the game table
+ * @param b width of the game table
+ * @return the pressed key (enter - reveal, backspace - flag toggle)
+ */
+EconioKey stepper(int &x, int &y, int a, int b){
+    fflush(stdin);
+    econio_rawmode();
+    while (true) {
+        econio_gotoxy(x, y);
+        econio_textcolor(COL_LIGHTGREEN);
+        std::cout << "X";
+        econio_gotoxy(0, 0);
+
+        int key = econio_getch();
+        econio_gotoxy(x,y);
+        printf(" ");
+
+        if (key == KEY_UP || key == 'w')
+            y = max(y-2, 2);
+        else if (key == KEY_DOWN || key == 's')
+            y = min(y+2, a*2);
+        else if (key == KEY_LEFT || key == 'a')
+            x = max(x-5, 6);
+        else if (key == KEY_RIGHT || key == 'd')
+            x = min(x+5, b*5+1);
+        else if (key == KEY_ENTER) {
+            econio_normalmode();
+            return KEY_ENTER;
+        }
+        else if (key == KEY_BACKSPACE){
+            econio_normalmode();
+            return KEY_BACKSPACE;
+        }
+        else if(key == 'm'){
+            econio_normalmode();
+            return KEY_END;
+        }
     }
 }
 
+template<class T>
+T placer(T a, bool decide){
+    if(decide)
+        return (a-2)/2;
+    else
+        return (a-6)/5;
+}
 
 void Game::first_step(int& res, int& x, int& y){
     draw();
     res = stepper(x, y, get_h(), get_w());
 
     if (res == KEY_ENTER) {
-        get_table()->get((y - 2) / 2, (x - 6) / 5)->Uncover();
+        get_table()->get(placer(y, true), placer(x, false))->Uncover();
     }
     if (res == KEY_BACKSPACE)
-        get_table()->flag_toggle((y - 2) / 2, (x - 6) / 5);
+        get_table()->flag_toggle(placer(y, true), placer(x, false));
 
     rand_mine();
-
+    
     if (res == KEY_ENTER) {
-        get_table()->get((y - 2) / 2, (x - 6) / 5)->Cover();
-        plus_revealed(get_table()->revealer((y - 2) / 2, (x - 6) / 5));
+        get_table()->get(placer(y, true), placer(x, false))->Cover();
+        plus_revealed(get_table()->revealer(placer(y, true), placer(x, false)));
     }
 
 }
@@ -110,14 +165,19 @@ void Game::game_loop(int& res, int& x, int& y){
         draw();
         fflush(stdin);
         res = stepper(x, y, get_h(), get_w());
-        if (res == KEY_ENTER && !get_table()->get((y - 2) / 2, (x - 6) / 5)->is_mine() &&
+        if (res == KEY_ENTER && !get_table()->get(placer(y, true), placer(x, false))->is_mine() &&
             !get_table()->get((y - 2) / 2, (x - 6) / 5)->flagged())
-            plus_revealed(get_table()->revealer((y - 2) / 2, (x - 6) / 5));
-        if (res == KEY_BACKSPACE && !get_table()->get((y - 2) / 2, (x - 6) / 5)->uncovered())
-            get_table()->flag_toggle((y - 2) / 2, (x - 6) / 5);
-        if (res == KEY_ENTER && get_table()->get((y - 2) / 2, (x - 6) / 5)->is_mine() &&
-            !get_table()->get((y - 2) / 2, (x - 6) / 5)->flagged())
+            plus_revealed(get_table()->revealer(placer(y, true), placer(x, false)));
+        if (res == KEY_BACKSPACE && !get_table()->get(placer(y, true), placer(x, false))->uncovered())
+            get_table()->flag_toggle(placer(y, true), placer(x, false));
+        if (res == KEY_ENTER && get_table()->get(placer(y, true), placer(x, false))->is_mine() &&
+            !get_table()->get(placer(y, true), placer(x, false))->flagged())
             toggle_fail_state();
+        if(res == KEY_END){
+            save();
+            econio_textcolor(COL_RESET);
+            break;
+        }
     }
 };
 

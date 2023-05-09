@@ -13,6 +13,5 @@ add_executable(akna_pp main.cpp
         Mine.cpp Mine.h
         Tile.h
         VektorTable.cpp VektorTable.h
-        Control.cpp Control.h
         econio.cpp econio.h
         memtrace.h memtrace.cpp)

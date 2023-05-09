@@ -31,11 +31,7 @@ public:
         matrix[row][col] = new Mine();
     }
 
-    Tile *get(int row, int col) const {
-        return matrix[row][col];
-    }
-
-    Tile *get(int row, int col) {
+    Tile* get(int row, int col) {
         return matrix[row][col];
     }
 
@@ -51,14 +47,14 @@ public:
     void filler();
 
     ~VektorTable() {
+
         std::cout << "VEGEM VAN GECI - 1" << std::endl;
         for (int i = 0; i < matrix.size(); ++i) {
-            for (int j = 0; j < matrix[i].size(); ++j) {
+            for (int j = 0; j < matrix[i].size()-1; ++j) {
                 delete matrix[i][j];
             }
         }
         std::cout << "VEGEM VAN GECI - 2" << std::endl;
-        getchar();
     }
 };
 

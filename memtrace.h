@@ -14,7 +14,7 @@ inclue-ok:  2017., 2018., 2019., 2021.
 #if defined(MEMTRACE)
 
 /*ha definiálva van, akkor a hibakat ebbe a fajlba írja, egyébkent stderr-re*/
-/*#define MEMTRACE_ERRFILE MEMTRACE.ERR*/
+#define MEMTRACE_ERRFILE MEMTRACE.ERR
 
 /*ha definialva van, akkor futas kozben lancolt listat epit. Javasolt a hasznalata*/
 #define MEMTRACE_TO_MEMORY
