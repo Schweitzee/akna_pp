@@ -62,7 +62,7 @@ int main() {
         if(branch == 1){
             gameszko = Game::load();
             if(gameszko == nullptr){
-                std::cout << "Failed to load game" << std::endl;
+                std::cout << "Failed to load game, either no matching saved game or invalid format in saved game!" << std::endl;
                 fflush(stdin);
                 getchar();
                 econio_clrscr();
