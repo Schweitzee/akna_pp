@@ -50,7 +50,7 @@ public:
         std::ifstream input;
         input.open(from);
         if(!input.is_open()){
-            return nullptr;
+            throw std::ifstream::failure("Couldn't find the saved game");
         }
         input >> he >> wi;
         VektorTable* t = new VektorTable(he, wi);

@@ -161,7 +161,7 @@ void Game::first_step(int& res, int& x, int& y){
 }
 
 void Game::game_loop(int& res, int& x, int& y){
-    while (!fail_check() && !win_check()) {
+    while (!fail_check() && !win_check() && res != KEY_END) {
         draw();
         fflush(stdin);
         res = stepper(x, y, get_h(), get_w());
@@ -174,9 +174,19 @@ void Game::game_loop(int& res, int& x, int& y){
             !get_table()->get(placer(y, true), placer(x, false))->flagged())
             toggle_fail_state();
         if(res == KEY_END){
-            save();
+            bool s = save();
+            fflush(stdin);
+            econio_gotoxy(0,get_h()*2+5);
+            if(s){
+                econio_textcolor(COL_GREEN);
+                std::cout << "Game saved, press ENTER to return to the menu";
+            }
+            else{
+                econio_textcolor(COL_RED);
+                std::cout << "Couldn't save game, because the file can't be opened or couldn't be created, check the file permissions in the directory!" << std::endl << "Press ENTER to return to the menu";
+            }
             econio_textcolor(COL_RESET);
-            break;
+            getchar();
         }
     }
 };

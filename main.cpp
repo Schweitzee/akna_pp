@@ -32,15 +32,12 @@ int main() {
         Game* gameszko= nullptr;
         int branch = -1;
         start_print();
-        std::cout << "   - Press '0' to start a new game" << std::endl << "   - Press '1' to load a saved one" << std::endl;
+        std::cout << "   - Press '0' to start a new game" << std::endl << "   - Press '1' to load a saved one" << std::endl << "   - Press '2' to exit game" << std::endl;
         std::cin >> branch;
-        while(branch != 0 && branch != 1){
-            std::cout << "Invalid input, 0 or 1 please!" << std::endl;
+        while(branch != 0 && branch != 1 && branch != 2){
+            std::cout << "Invalid input, 0, 1 or 2 please!" << std::endl;
             std::cin >> branch;
         }
-        //
-        //      JÁTÉK LEÍRÁS? INPUT ÉS BUILD
-        //
 
         int x = 6;
         int y = 2;
@@ -56,13 +53,21 @@ int main() {
             }
             gameszko = new Game(a, b, c);
             gameszko->first_step(res, x, y);
-
         }
 
         if(branch == 1){
-            gameszko = Game::load();
+            try {
+                gameszko = Game::load();
+            }
+            catch (std::ifstream::failure){
+                fflush(stdin);
+                std::cout << "There's no saved game" << std::endl << "Press ENTER to return to the menu";
+                getchar();
+                continue;
+            }
+
             if(gameszko == nullptr){
-                std::cout << "Failed to load game, either no matching saved game or invalid format in saved game!" << std::endl;
+                std::cout << "Failed to load game, invalid format in saved game!" << std::endl << "Press ENTER to return to the menu";
                 fflush(stdin);
                 getchar();
                 econio_clrscr();
@@ -70,17 +75,17 @@ int main() {
             }
             gameszko->get_table()->filler();
         }
-
+        if(branch == 2)
+            break;
 
         gameszko->game_loop(res, x, y);
         if(res == KEY_END){
             delete gameszko;
+            res = KEY_ENTER;
             continue;
         }
         gameszko->finish_him(res);
         delete gameszko;
-
-
     }
 
     getchar();

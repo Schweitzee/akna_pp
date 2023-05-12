@@ -50,7 +50,7 @@ public:
 
         std::cout << "VEGEM VAN GECI - 1" << std::endl;
         for (int i = 0; i < matrix.size(); ++i) {
-            for (int j = 0; j < matrix[i].size()-1; ++j) {
+            for (int j = 0; j < matrix[i].size(); ++j) {
                 delete matrix[i][j];
             }
         }
