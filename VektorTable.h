@@ -12,49 +12,57 @@
 #include "memtrace.h"
 
 class VektorTable {
-    std::vector<std::vector<Tile *>> matrix;
+    std::vector<std::vector<Tile *>> matrix; /** < 2D vector matrix filled with Tile* to allocate Fields and Mines onto them >*/
 public:
 
+    /**
+     * @brief Constructor to the Vektortable, fills it up with basic Field objects allocated dynamically
+     * @param row No. of rows
+     * @param col No. of columns
+     */
+    VektorTable(int row, int col);
 
-    VektorTable(int row, int col) {
-        matrix.resize(row);
-        for (int i = 0; i < row; i++) {
-            matrix[i].resize(col);
-            for (int j = 0; j < col; j++) {
-                matrix[i][j] = new Field();
-            }
-        }
-    }
+    /**
+     * @brief changes a Field object on a given coordinate to a Mine object
+     * @param row
+     * @param col
+     */
+    void place_mine(unsigned row, unsigned col);
 
-    void place_mine(unsigned row, unsigned col) {
-        delete matrix[row][col];
-        matrix[row][col] = new Mine();
-    }
+    /**
+     * @brief returns the address of a Field or a Mine given its coordinates
+     * @param row
+     * @param col
+     * @return
+     */
+    Tile* get(int row, int col) {return matrix[row][col];}
 
-    Tile* get(int row, int col) {
-        return matrix[row][col];
-    }
+    /**
+     * @brief Toggles the flag state of a given Field or Mine based on coordinates
+     * @param row
+     * @param col
+     */
+    void flag_toggle(int row, int col);
 
-    void flag_toggle(int row, int col) {
-        if (matrix[row][col]->flagged())
-            matrix[row][col]->Cover();
-        else if (matrix[row][col]->covered())
-            matrix[row][col]->Flag();
-    }
-
+    /**
+     * @brief The revealer algorithm used when the user reveals a block and some of the block automatically gets revealed around it (this reveals the first one too)
+     * @param row y coordinate of the initially revealed Tile
+     * @param col x coordinate of the initially revealed Tile
+     * @return the number of blocks revealed in the game with the algorithm
+     */
     int revealer(int row, int col);
 
+    /**
+     * @brief goes over the whole VektorTable and if it finds a bomb, it gives +1 into the mine_c to all the Tiles around it
+     */
     void filler();
 
     ~VektorTable() {
-
-        std::cout << "VEGEM VAN GECI - 1" << std::endl;
         for (int i = 0; i < matrix.size(); ++i) {
             for (int j = 0; j < matrix[i].size(); ++j) {
                 delete matrix[i][j];
             }
         }
-        std::cout << "VEGEM VAN GECI - 2" << std::endl;
     }
 };
 

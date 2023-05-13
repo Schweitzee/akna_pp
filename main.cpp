@@ -6,9 +6,6 @@
 
 #include "Game.h"
 
-
-
-
 void wait_n_print(int to_w, char ch){
     std::chrono::milliseconds dura( to_w);
     std::this_thread::sleep_for(dura);
@@ -19,12 +16,10 @@ void start_print(){
     econio_clrscr();
     std::string sign = "This is my MINESWEEPER!";
     for (int i = 0; i < sign.size(); ++i) {
-        wait_n_print(i*5, sign[i]);
+        wait_n_print(i*4, sign[i]);
     }
     std::cout << std::endl;
 }
-
-
 
 int main() {
     int res = KEY_ENTER;
@@ -43,12 +38,12 @@ int main() {
         int y = 2;
         if(branch == 0) {
             int a = -1, b = -1, c = 10;
-            std::cout << "Type in the parameters of the game separated with a space [height width number_of_mines]: ";
+            std::cout << "Height and width between 10 and 40, mine number between 10% and 35%" << std::endl <<"Type in the parameters of the game separated with a space [height width number_of_mines]: ";
             std::cin >> a >> b >> c;
 
             while (a < 10 || a > 40 || b < 10 || b > 40 || c < a * b * 0.1 || c > a * b * 0.35) {
                 fflush(stdin);
-                std::cout << "elbasztad zsiguli, geci a b c-t: ";
+                std::cout << "Wrong numbers, try again: ";
                 std::cin >> a >> b >> c;
             }
             gameszko = new Game(a, b, c);

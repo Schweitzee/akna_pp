@@ -189,6 +189,90 @@ void Game::game_loop(int& res, int& x, int& y){
             getchar();
         }
     }
-};
+}
 
+void Game::rand_mine() {
+    srand((unsigned)time(nullptr)*91);
+    unsigned ready_mine = 0;
+    while(ready_mine < mine_n){
+        int x = rand() % height, y = rand() % width;
+        if((!table->get(x,y)->is_mine()) && !table->get(x,y)->uncovered()){
+            table->place_mine(x,y);
+            ready_mine++;
+        }
+    }
+    table->filler();
+}
+
+Game* Game::load(std::string from){
+    int he =0, wi =0, min = 0, rev = 0;
+    std::ifstream input;
+    input.open(from);
+    if(!input.is_open()){
+        throw std::ifstream::failure("Couldn't find the saved game");
+    }
+    input >> he >> wi;
+    VektorTable* t = new VektorTable(he, wi);
+    min = 0;
+    rev = 0;
+    for(int i = 0; i < he; ++i){
+        for (int j = 0; j < wi; ++j) {
+            int k;
+            input >> k;
+            switch (k) {
+                case 0:
+                    t->place_mine(i,j);
+                    min++;
+                    break;
+                case 1:
+                    t->get(i,j)->Cover();
+                    break;
+                case 2:
+                    t->get(i,j)->Uncover();
+                    rev++;
+                    break;
+                case 3:
+                    t->get(i,j)->Flag();
+                    break;
+                case 4:
+                    t->place_mine(i,j);
+                    t->get(i,j)->Flag();
+                    min++;
+                    break;
+                default:
+                    delete t;
+                    return nullptr;
+            }
+        }
+    }
+    input.close();
+    return new Game(he,wi,min,t, rev);
+}
+
+bool Game::save(std::string file){
+    std::ofstream output;
+    output.open(file);
+    if(!output.is_open()){
+        std::cout << "Unable to open file to save game." << std::endl;
+        return false;
+    }
+    output << get_w() << " " << get_h() << std::endl;
+    for(int i = 0; i < get_h(); ++i){
+        for (int j = 0; j < get_w(); ++j) {
+            if (get_table()->get(i, j)->is_mine() && !get_table()->get(i, j)->flagged())
+                output << 0 << " ";
+            if(!get_table()->get(i, j)->is_mine() && get_table()->get(i, j)->covered())
+                output << 1 << " ";
+            if(!get_table()->get(i, j)->is_mine() && get_table()->get(i, j)->uncovered())
+                output << 2 << " ";
+            if(!get_table()->get(i, j)->is_mine() && get_table()->get(i, j)->flagged())
+                output << 3 << " ";
+            if(get_table()->get(i, j)->is_mine() && get_table()->get(i, j)->flagged())
+                output << 4 << " ";
+        }
+        output << std::endl;
+    }
+    output.close();
+    return true;
+}
 

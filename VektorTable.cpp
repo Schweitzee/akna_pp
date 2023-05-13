@@ -4,6 +4,30 @@
 
 #include "VektorTable.h"
 
+
+VektorTable::VektorTable(int row, int col) {
+    matrix.resize(row);
+    for (int i = 0; i < row; i++) {
+        matrix[i].resize(col);
+        for (int j = 0; j < col; j++) {
+            matrix[i][j] = new Field();
+        }
+    }
+}
+
+void VektorTable::place_mine(unsigned row, unsigned col) {
+    delete matrix[row][col];
+    matrix[row][col] = new Mine();
+}
+
+
+void VektorTable::flag_toggle(int row, int col) {
+    if (matrix[row][col]->flagged())
+        matrix[row][col]->Cover();
+    else if (matrix[row][col]->covered())
+        matrix[row][col]->Flag();
+}
+
 int VektorTable::revealer(int row, int col){
     int plus_revealed = 0;
     if(matrix[row][col]->covered() && !matrix[row][col]->is_mine()){
@@ -123,3 +147,4 @@ void VektorTable::filler() {
         }
     }
 }
+

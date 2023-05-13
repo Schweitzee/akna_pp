@@ -27,18 +27,7 @@ public:
      * @brief draws the mine cells based on the state of the game
      * @param end shows the function if the game is ended
      */
-    void draw(bool end) override{
-        if(end) {
-            econio_textcolor(COL_YELLOW);
-            std::cout << " X";
-        }
-        else if(this->covered())
-            std::cout << " x";
-        else if(this->flagged()) {
-            econio_textcolor(COL_LIGHTCYAN);
-            std::cout << " P";
-        }
-    }
+    void draw(bool end) override;
 
 
     /**
