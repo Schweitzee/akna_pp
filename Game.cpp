@@ -98,7 +98,6 @@ T min(T a, T b){
  * @return the pressed key (enter - reveal, backspace - flag toggle)
  */
 EconioKey stepper(int &x, int &y, int a, int b){
-    fflush(stdin);
     econio_rawmode();
     while (true) {
         econio_gotoxy(x, y);
@@ -163,7 +162,6 @@ void Game::first_step(int& res, int& x, int& y){
 void Game::game_loop(int& res, int& x, int& y){
     while (!fail_check() && !win_check() && res != KEY_END) {
         draw();
-        fflush(stdin);
         res = stepper(x, y, get_h(), get_w());
         if (res == KEY_ENTER && !get_table()->get(placer(y, true), placer(x, false))->is_mine() &&
             !get_table()->get((y - 2) / 2, (x - 6) / 5)->flagged())
@@ -175,7 +173,6 @@ void Game::game_loop(int& res, int& x, int& y){
             toggle_fail_state();
         if(res == KEY_END){
             bool s = save();
-            fflush(stdin);
             econio_gotoxy(0,get_h()*2+5);
             if(s){
                 econio_textcolor(COL_GREEN);
@@ -192,10 +189,15 @@ void Game::game_loop(int& res, int& x, int& y){
 }
 
 void Game::rand_mine() {
-    srand((unsigned)time(nullptr)*91);
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<int> height_dist(0, height - 1);
+    std::uniform_int_distribution<int> width_dist(0, width - 1);
+
     int ready_mine = 0;
     while(ready_mine < mine_n){
-        int x = rand() % height, y = rand() % width;
+        int x = width_dist(gen);
+        int y = height_dist(gen);
         if((!table->get(x,y)->is_mine()) && !table->get(x,y)->uncovered()){
             table->place_mine(x,y);
             ready_mine++;
@@ -204,7 +206,7 @@ void Game::rand_mine() {
     table->filler();
 }
 
-Game* Game::load(std::string from){
+Game* Game::load(const std::string& from){
     int he =0, wi =0, min = 0, rev = 0;
     std::ifstream input;
     input.open(from);
@@ -247,7 +249,7 @@ Game* Game::load(std::string from){
     return new Game(he,wi,min, t, rev);
 }
 
-bool Game::save(std::string file){
+bool Game::save(const std::string& file){
     std::ofstream output;
     output.open(file);
     if(!output.is_open()){

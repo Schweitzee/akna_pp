@@ -5,6 +5,7 @@
 #include <thread>
 
 #include "Game.h"
+#include "econio.h"
 
 void wait_n_print(unsigned to_w, char ch){
     std::chrono::milliseconds dura( to_w);
@@ -42,7 +43,8 @@ int main() {
             std::cin >> a >> b >> c;
 
             while (a < 10 || a > 40 || b < 10 || b > 40 || c < a * b * 0.1 || c > a * b * 0.35) {
-                fflush(stdin);
+                std::cin.clear();
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                 std::cout << "Wrong numbers, try again: ";
                 std::cin >> a >> b >> c;
             }
@@ -55,16 +57,18 @@ int main() {
                 gameszko = Game::load();
             }
             catch (std::ifstream::failure){
-                fflush(stdin);
                 std::cout << "There's no saved game" << std::endl << "Press ENTER to return to the menu";
-                getchar();
+                std::cin.clear();
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                std::getchar();
                 continue;
             }
 
             if(gameszko == nullptr){
                 std::cout << "Failed to load game, invalid format in saved game!" << std::endl << "Press ENTER to return to the menu";
-                fflush(stdin);
-                getchar();
+                std::cin.clear();
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                std::getchar();
                 econio_clrscr();
                 continue;
             }

@@ -8,7 +8,6 @@
 #include <vector>
 #include <memory>
 #include <random>
-#include <ctime>
 #include <iostream>
 #include <fstream>
 
@@ -51,14 +50,14 @@ public:
      * @param from = "mentes.txt" string path to the file storing the saved game
      * @return An address to a dynamically allocated(!) and made Game object ready to be used with game loop.
      */
-    static Game* load(std::string from = "mentes.txt");
+    static Game* load(const std::string& from = "mentes.txt");
 
     /**
      * @brief saves a game to a txt file
      * @param file = "mentes.txt" string path to the file in which it stores the state of the game
      * @return bool based on the success of the saving
      */
-    bool save(std::string file = "mentes.txt");
+    bool save(const std::string& file = "mentes.txt");
 
     /**
      * @brief Returns the height of the game board.
