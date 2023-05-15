@@ -74,6 +74,10 @@ void Game::finish_him(int& res) const{
             econio_textcolor(COL_RESET);
         }
         econio_rawmode();
+
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
         res = econio_getch();
         econio_normalmode();
 }
@@ -142,6 +146,7 @@ T placer(T a, bool decide){
 
 void Game::first_step(int& res, int& x, int& y){
     draw();
+
     res = stepper(x, y, get_h(), get_w());
 
     if (res == KEY_ENTER) {
@@ -162,6 +167,7 @@ void Game::first_step(int& res, int& x, int& y){
 void Game::game_loop(int& res, int& x, int& y){
     while (!fail_check() && !win_check() && res != KEY_END) {
         draw();
+
         res = stepper(x, y, get_h(), get_w());
         if (res == KEY_ENTER && !get_table()->get(placer(y, true), placer(x, false))->is_mine() &&
             !get_table()->get((y - 2) / 2, (x - 6) / 5)->flagged())
@@ -183,6 +189,10 @@ void Game::game_loop(int& res, int& x, int& y){
                 std::cout << "Couldn't save game, because the file can't be opened or couldn't be created, check the file permissions in the directory!" << std::endl << "Press ENTER to return to the menu";
             }
             econio_textcolor(COL_RESET);
+
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
             getchar();
         }
     }
