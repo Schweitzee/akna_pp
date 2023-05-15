@@ -6,7 +6,7 @@
 
 #include "Game.h"
 
-void wait_n_print(int to_w, char ch){
+void wait_n_print(unsigned to_w, char ch){
     std::chrono::milliseconds dura( to_w);
     std::this_thread::sleep_for(dura);
     std::cout << ch;
@@ -15,7 +15,7 @@ void wait_n_print(int to_w, char ch){
 void start_print(){
     econio_clrscr();
     std::string sign = "This is my MINESWEEPER!";
-    for (int i = 0; i < sign.size(); ++i) {
+    for (unsigned i = 0; i < sign.size(); ++i) {
         wait_n_print(i*4, sign[i]);
     }
     std::cout << std::endl;

@@ -15,7 +15,7 @@ VektorTable::VektorTable(int row, int col) {
     }
 }
 
-void VektorTable::place_mine(unsigned row, unsigned col) {
+void VektorTable::place_mine(int row, int col) {
     delete matrix[row][col];
     matrix[row][col] = new Mine();
 }
@@ -30,6 +30,8 @@ void VektorTable::flag_toggle(int row, int col) {
 
 int VektorTable::revealer(int row, int col){
     int plus_revealed = 0;
+    int width = matrix.size();
+    int height = matrix[0].size();
     if(matrix[row][col]->covered() && !matrix[row][col]->is_mine()){
         if(matrix[row][col]->get_num()){
             matrix[row][col]->Uncover();
@@ -39,7 +41,7 @@ int VektorTable::revealer(int row, int col){
         plus_revealed++;
         for (int i = (row-1); i <= (row+1); ++i) {
             for (int j = (col-1); j <= (col+1); ++j) {
-                if(i >= 0 && i < matrix.size() && j >= 0 && j < matrix[0].size()){
+                if(i >= 0 && i < height && j >= 0 && j < width){
                     if(matrix[i][j]->get_num() == 0){
                         plus_revealed += revealer(i,j);
                     }

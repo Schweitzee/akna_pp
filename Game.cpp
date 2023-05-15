@@ -193,7 +193,7 @@ void Game::game_loop(int& res, int& x, int& y){
 
 void Game::rand_mine() {
     srand((unsigned)time(nullptr)*91);
-    unsigned ready_mine = 0;
+    int ready_mine = 0;
     while(ready_mine < mine_n){
         int x = rand() % height, y = rand() % width;
         if((!table->get(x,y)->is_mine()) && !table->get(x,y)->uncovered()){
@@ -213,8 +213,6 @@ Game* Game::load(std::string from){
     }
     input >> he >> wi;
     VektorTable* t = new VektorTable(he, wi);
-    min = 0;
-    rev = 0;
     for(int i = 0; i < he; ++i){
         for (int j = 0; j < wi; ++j) {
             int k;
@@ -246,7 +244,7 @@ Game* Game::load(std::string from){
         }
     }
     input.close();
-    return new Game(he,wi,min,t, rev);
+    return new Game(he,wi,min, t, rev);
 }
 
 bool Game::save(std::string file){

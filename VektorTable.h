@@ -27,7 +27,7 @@ public:
      * @param row
      * @param col
      */
-    void place_mine(unsigned row, unsigned col);
+    void place_mine(int row, int col);
 
     /**
      * @brief returns the address of a Field or a Mine given its coordinates
@@ -58,9 +58,11 @@ public:
     void filler();
 
     ~VektorTable() {
-        for (int i = 0; i < matrix.size(); ++i) {
-            for (int j = 0; j < matrix[i].size(); ++j) {
-                delete matrix[i][j];
+        std::vector<std::vector<Tile *>>::iterator it1;
+        std::vector<Tile *>::iterator it2;
+        for (it1 = matrix.begin(); it1 != matrix.end(); ++it1) {
+            for (it2 = it1->begin(); it2 != it1->end(); ++it2) {
+                delete *it2;
             }
         }
     }

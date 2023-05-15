@@ -21,7 +21,7 @@
 class Game {
     int height; /**< The height of the game board. */
     int width; /**< The width of the game board. */
-    unsigned mine_n; /**< The number of mines on the game board. */
+    int mine_n; /**< The number of mines on the game board. */
     int revealed_n; /**< The number of revealed tiles on the game board. */
 
     static bool fail_state; /**< The failure state of the game. */
@@ -37,7 +37,7 @@ public:
      * @param wid The width of the game board.
      * @param mine The number of mines on the game board.
      */
-    Game(int heig, int wid, unsigned mine, VektorTable* t = nullptr, int r = 0) : height(heig), width(wid), mine_n(mine), revealed_n(r){
+    Game(int heig, int wid, int mine, VektorTable* t = nullptr, int r = 0) : height(heig), width(wid), mine_n(mine), revealed_n(r){
         if(t == nullptr){
             table = new VektorTable(heig,wid);
         }
