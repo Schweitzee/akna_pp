@@ -111,7 +111,7 @@ EconioKey stepper(int &x, int &y, int a, int b){
 
         int key = econio_getch();
         econio_gotoxy(x,y);
-        printf(" ");
+        std::cout << " ";
 
         if (key == KEY_UP || key == 'w')
             y = max(y-2, 2);

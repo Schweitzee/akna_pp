@@ -1,8 +1,6 @@
 #ifndef ECONIO_H
 #define ECONIO_H
 
-#include <stdbool.h>
-
 #ifdef __cplusplus
 extern "C" {
 #endif

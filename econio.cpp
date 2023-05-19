@@ -5,9 +5,12 @@
 
 
 #include <windows.h>
-#include <stdio.h>
+
 #include <conio.h>
-#include <assert.h>
+#include <cassert>
+#include <iostream>
+#include <iomanip>
+#include <limits>
 
 static WORD bgcolor = COL_BLACK;
 static WORD fgcolor = COL_LIGHTGRAY;
@@ -57,7 +60,7 @@ void econio_textcolor(int newcolor) {
     assert(newcolor >= 0 && newcolor < 16);
     fgcolor = (WORD) colormap[newcolor];
     SetConsoleTextAttribute(STDOUT, fgcolor | bgcolor);
-}
+ }
 
 
 void econio_clrscr(void) {
@@ -71,11 +74,13 @@ void econio_clrscr(void) {
         FillConsoleOutputAttribute (hstdout, csbi.wAttributes, dwConSize, coordScreen, &cCharsWritten);
         SetConsoleCursorPosition   (hstdout, coordScreen);
     }
+
 }
 
 
 void econio_flush() {
-    fflush(stdout);
+    std::cin.clear();
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 }
 
 
@@ -153,23 +158,28 @@ void econio_sleep(double sec) {
 #else // defined _WIN32
 
 
-#include <assert.h>
-#include <stdio.h>
+#include <cassert>
+#include <cstdio>
 #include <termios.h>
 #include <unistd.h>
-#include <stdbool.h>
+
 #include <sys/time.h>
 #include <sys/types.h>
-#include <ctype.h>
-#include <string.h>
-#include <time.h>
+#include <cctype>
+#include <cstring>
+#include <ctime>
+#include <iomanip>
+#include <regex>
+#include <iostream>
+#include <limits>
 
 
 void econio_textcolor(int color) {
     static int colormap[] = { 30, 34, 32, 36, 31, 35, 33, 37, 90, 94, 92, 96, 91, 95, 93, 97, 39 };
 
     assert(color >= 0 && color <= 16);
-    printf("\033[%dm", colormap[color]);
+    std::string out = "\033[" + std::to_string(colormap[color]) + "dm";
+    std::cout << out;
 }
 
 
@@ -177,28 +187,34 @@ void econio_textbackground(int color) {
     static int colormap[] = { 40, 44, 42, 46, 41, 45, 43, 47, 100, 104, 102, 106, 101, 105, 103, 107, 49 };
 
     assert(color >= 0 && color <= 16);
-    printf("\033[%dm", colormap[color]);
+    std::string out = "\033[" + std::to_string(colormap[color]) + "dm";
+    std::cout << out;
 }
 
 
 void econio_gotoxy(int x, int y) {
-    printf("\033[%d;%dH", y+1, x+1);
+    std::string out = "\033[" +std::to_string(x) + ";" + std::to_string(y) + "dH";
+    std::cout << out;
 }
 
 
 void econio_clrscr() {
-    printf("\033[2J");
+    system("clear");
     econio_gotoxy(0, 0);
 }
 
 
 void econio_flush() {
-    fflush(stdout);
+    std::cin.clear();
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 }
 
 
 void econio_set_title(char const *title) {
-    printf("\033]2;%s\007", title);
+    std::string out = "\033]2;";
+    out.append(title);
+    out += "\007";
+    std::cout << out;
 }
 
 
