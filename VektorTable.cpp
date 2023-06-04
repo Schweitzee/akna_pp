@@ -30,8 +30,8 @@ void VektorTable::flag_toggle(int row, int col) {
 
 int VektorTable::revealer(int row, int col){
     int plus_revealed = 0;
-    int width = matrix.size();
-    int height = matrix[0].size();
+    int height = matrix.size();
+    int width = matrix[0].size();
     if(matrix[row][col]->covered() && !matrix[row][col]->is_mine()){
         if(matrix[row][col]->get_num()){
             matrix[row][col]->Uncover();
@@ -42,7 +42,7 @@ int VektorTable::revealer(int row, int col){
         for (int i = (row-1); i <= (row+1); ++i) {
             for (int j = (col-1); j <= (col+1); ++j) {
                 if(i >= 0 && i < height && j >= 0 && j < width){
-                    if(matrix[i][j]->get_num() == 0){
+                    if(matrix[i][j]->covered() && matrix[i][j]->get_num() == 0){
                         plus_revealed += revealer(i,j);
                     }
                     else if(matrix[i][j]->covered()  && !matrix[i][j]->is_mine()){

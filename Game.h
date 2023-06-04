@@ -15,7 +15,7 @@
 #include "VektorTable.h"
 #include "econio.h"
 
-#include "memtrace.h"
+//#include "memtrace.h"
 
 class Game {
     int height; /**< The height of the game board. */
@@ -44,20 +44,12 @@ public:
             table = t;
     };
 
-
-    /**
-     * @brief Loads a game from a txt file into and allocates a game obj. to it
-     * @param from = "mentes.txt" string path to the file storing the saved game
-     * @return An address to a dynamically allocated(!) and made Game object ready to be used with game loop.
-     */
-    static Game* load(const std::string& from = "mentes.txt");
-
     /**
      * @brief saves a game to a txt file
      * @param file = "mentes.txt" string path to the file in which it stores the state of the game
      * @return bool based on the success of the saving
      */
-    bool save(const std::string& file = "mentes.txt");
+    bool save(const std::string& file = "mentes.txt") const;
 
     /**
      * @brief Returns the height of the game board.
@@ -91,7 +83,7 @@ public:
      * @brief Returns a pointer to the game board.
      * @return A pointer to the game board.
      */
-    VektorTable* get_table() { return this->table; }
+    VektorTable* get_table() const { return this->table; }
 
     /**
      * @brief Increments the number of revealed tiles by a specified amount.
@@ -146,9 +138,15 @@ public:
     void draw() const;
 
     ~Game(){
-        std::cout << "gudbaj";
         delete table;
     }
 };
+
+/**
+ * @brief Loads a game from a txt file into and allocates a game obj. to it
+ * @param from = "mentes.txt" string path to the file storing the saved game
+ * @return An address to a dynamically allocated(!) and made Game object ready to be used with game loop.
+ */
+Game* g_load(const std::string& from = "mentes.txt");
 
 #endif //AKNA_PP_GAME_H

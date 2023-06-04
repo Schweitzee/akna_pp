@@ -79,6 +79,7 @@ void Game::finish_him(int& res) const{
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
         res = econio_getch();
+
         econio_normalmode();
 }
 
@@ -121,11 +122,11 @@ EconioKey stepper(int &x, int &y, int a, int b){
             x = max(x-5, 6);
         else if (key == KEY_RIGHT || key == 'd')
             x = min(x+5, b*5+1);
-        else if (key == KEY_ENTER) {
+        else if (key == KEY_ENTER || key == '0') {
             econio_normalmode();
             return KEY_ENTER;
         }
-        else if (key == KEY_BACKSPACE){
+        else if (key == KEY_BACKSPACE || key == 'f'){
             econio_normalmode();
             return KEY_BACKSPACE;
         }
@@ -136,13 +137,13 @@ EconioKey stepper(int &x, int &y, int a, int b){
     }
 }
 
-template<class T>
-T placer(T a, bool decide){
-    if(decide)
-        return (a-2)/2;
-    else
-        return (a-6)/5;
+int tr_y(int y){
+    return (y-2)/2;
 }
+int tr_x(int x){
+    return (x-6)/5;
+}
+
 
 void Game::first_step(int& res, int& x, int& y){
     draw();
@@ -150,16 +151,16 @@ void Game::first_step(int& res, int& x, int& y){
     res = stepper(x, y, get_h(), get_w());
 
     if (res == KEY_ENTER) {
-        get_table()->get(placer(y, true), placer(x, false))->Uncover();
+        get_table()->get(tr_y(y), tr_x(x))->Uncover();
     }
     if (res == KEY_BACKSPACE)
-        get_table()->flag_toggle(placer(y, true), placer(x, false));
+        get_table()->flag_toggle(tr_y(y), tr_x(x));
 
     rand_mine();
     
     if (res == KEY_ENTER) {
-        get_table()->get(placer(y, true), placer(x, false))->Cover();
-        plus_revealed(get_table()->revealer(placer(y, true), placer(x, false)));
+        get_table()->get(tr_y(y), tr_x(x))->Cover();
+        plus_revealed(get_table()->revealer(tr_y(y), tr_x(x)));
     }
 
 }
@@ -169,31 +170,27 @@ void Game::game_loop(int& res, int& x, int& y){
         draw();
 
         res = stepper(x, y, get_h(), get_w());
-        if (res == KEY_ENTER && !get_table()->get(placer(y, true), placer(x, false))->is_mine() &&
+        if (res == KEY_ENTER && !get_table()->get(tr_y(y), tr_x(x))->is_mine() &&
             !get_table()->get((y - 2) / 2, (x - 6) / 5)->flagged())
-            plus_revealed(get_table()->revealer(placer(y, true), placer(x, false)));
-        if (res == KEY_BACKSPACE && !get_table()->get(placer(y, true), placer(x, false))->uncovered())
-            get_table()->flag_toggle(placer(y, true), placer(x, false));
-        if (res == KEY_ENTER && get_table()->get(placer(y, true), placer(x, false))->is_mine() &&
-            !get_table()->get(placer(y, true), placer(x, false))->flagged())
+            plus_revealed(get_table()->revealer(tr_y(y), tr_x(x)));
+        if (res == KEY_BACKSPACE && !get_table()->get(tr_y(y), tr_x(x))->uncovered())
+            get_table()->flag_toggle(tr_y(y), tr_x(x));
+        if (res == KEY_ENTER && get_table()->get(tr_y(y), tr_x(x))->is_mine() &&
+            !get_table()->get(tr_y(y), tr_x(x))->flagged())
             toggle_fail_state();
         if(res == KEY_END){
             bool s = save();
             econio_gotoxy(0,get_h()*2+5);
             if(s){
                 econio_textcolor(COL_GREEN);
-                std::cout << "Game saved, press ENTER to return to the menu";
+                std::cout << "Game saved, returning to menu";
             }
             else{
                 econio_textcolor(COL_RED);
-                std::cout << "Couldn't save game, because the file can't be opened or couldn't be created, check the file permissions in the directory!" << std::endl << "Press ENTER to return to the menu";
+                std::cout << "Couldn't save game, because the file can't be opened or couldn't be created, check the file permissions in the directory!" << std::endl << "Returning to menu";
             }
             econio_textcolor(COL_RESET);
-
-            std::cin.clear();
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-
-            getchar();
+            econio_sleep(4);
         }
     }
 }
@@ -208,20 +205,21 @@ void Game::rand_mine() {
     while(ready_mine < mine_n){
         int x = width_dist(gen);
         int y = height_dist(gen);
-        if((!table->get(x,y)->is_mine()) && !table->get(x,y)->uncovered()){
-            table->place_mine(x,y);
+        if((!table->get(y,x)->is_mine()) && !table->get(y,x)->uncovered()){
+            table->place_mine(y,x);
             ready_mine++;
         }
     }
     table->filler();
 }
 
-Game* Game::load(const std::string& from){
+Game* g_load(const std::string& from){
     int he =0, wi =0, min = 0, rev = 0;
     std::ifstream input;
     input.open(from);
     if(!input.is_open()){
-        throw std::ifstream::failure("Couldn't find the saved game");
+        input.close();
+        throw std::ifstream::failure("Couldn't find or couldn't open the saved game");
     }
     input >> he >> wi;
     VektorTable* t = new VektorTable(he, wi);
@@ -259,14 +257,15 @@ Game* Game::load(const std::string& from){
     return new Game(he,wi,min, t, rev);
 }
 
-bool Game::save(const std::string& file){
+bool Game::save(const std::string& file) const{
     std::ofstream output;
     output.open(file);
     if(!output.is_open()){
+        output.close();
         std::cout << "Unable to open file to save game." << std::endl;
         return false;
     }
-    output << get_w() << " " << get_h() << std::endl;
+    output << get_h() << " " << get_w() << std::endl;
     for(int i = 0; i < get_h(); ++i){
         for (int j = 0; j < get_w(); ++j) {
             if (get_table()->get(i, j)->is_mine() && !get_table()->get(i, j)->flagged())

@@ -9,7 +9,7 @@
 #include "Mine.h"
 #include <vector>
 
-#include "memtrace.h"
+//#include "memtrace.h"
 
 class VektorTable {
     std::vector<std::vector<Tile *>> matrix; /** < 2D vector matrix filled with Tile* to allocate Fields and Mines onto them >*/
@@ -29,12 +29,12 @@ public:
      */
     void place_mine(int row, int col);
 
-    /**
-     * @brief returns the address of a Field or a Mine given its coordinates
-     * @param row
-     * @param col
-     * @return
-     */
+/**
+ * @brief returns the address of a Field or a Mine given its coordinates
+ * @param row
+ * @param col
+ * @return
+ */
     Tile* get(int row, int col) {return matrix[row][col];}
 
     /**

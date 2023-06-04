@@ -134,14 +134,28 @@ int econio_getch() {
     };
 
     assert(rawmode);
+
+#ifdef CPORTA
+    int code = std::cin.get();
+#endif
+
+#ifndef CPORTA
     int code = _getch();
+#endif
+
     if (code == 0x7F)
         return KEY_BACKSPACE;
     if (code == 0x0D)
         return KEY_ENTER;
     if (code != 0xE0)
         return code;
+#ifdef CPORTA
+    code = std::cin.get();
+#endif
+
+#ifndef CPORTA
     code = _getch();
+#endif
 
     for (int i = 0; windowskeycodes[i].code != -1; ++i)
         if (code == windowskeycodes[i].code)
